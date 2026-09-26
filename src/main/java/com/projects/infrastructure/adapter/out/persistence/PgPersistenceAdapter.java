@@ -7,16 +7,13 @@ import com.projects.application.port.out.TransactionRepository;
 import com.projects.application.port.out.UsuarioRepository;
 import com.projects.domain.model.billetera.Cliente;
 import com.projects.domain.model.seguridad.Usuario;
-import com.projects.infrastructure.config.PostressqlConexion;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
-public class PgPersistenceAdapter implements TransactionRepository, UsuarioRepository, ClienteRepository {
+public class PgPersistenceAdapter implements TransactionRepository,ClienteRepository,UsuarioRepository{
 
     private static final String SAVE_USER = """
             """;
-
 
     @Override
     public Optional<Cliente> save(Cliente cliente) {
@@ -24,17 +21,22 @@ public class PgPersistenceAdapter implements TransactionRepository, UsuarioRepos
     }
 
     @Override
+    public boolean existsByDni(String dni) {
+        return false;
+    }
+
+    @Override
+    public boolean existsByCelular(String celular) {
+        return false;
+    }
+
+    @Override
     public Optional<Usuario> save(Usuario usuario) {
-        try(var con= PostressqlConexion.getConnection();
-            var stmt = con.prepareStatement(SAVE_USER)
-        ) {
-
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-
-
         return Optional.empty();
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return false;
     }
 }

@@ -6,26 +6,52 @@ import com.projects.domain.result.BilleteraError;
 import com.projects.domain.result.Result;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class Billetera {
 
     private Long id;
-    private Cliente cliente;
+    private Long clienteId;
     private BigDecimal saldo;
     private EstadoBilletera estadoBilletera;
-    private LocalDateTime fechaCreacion;
+    private OffsetDateTime fechaCreacion;
 
-    public Billetera(Long id, LocalDateTime fechaCreacion, EstadoBilletera estadoBilletera, BigDecimal saldo, Cliente cliente) {
+    private Billetera(Long id, Long clienteId, OffsetDateTime fechaCreacion, BigDecimal saldo) {
         this.id = id;
+        this.clienteId = clienteId;
         this.fechaCreacion = fechaCreacion;
-        this.estadoBilletera = EstadoBilletera.ACTIVA;
         this.saldo = saldo;
-        this.cliente = cliente;
+        this.estadoBilletera = EstadoBilletera.ACTIVA;
     }
 
 
 // Reglas de negocio.
+
+    public static Result<Billetera> abrirPara(
+            Long clienteId,
+            OffsetDateTime fechaAhora
+    ) {
+
+        if (clienteId == null) {
+            return Result.failure(BilleteraError.CLIENTE_REQUERIDO.name(), " El cliente debe ser obligatorio.");
+        }
+
+        if (fechaAhora == null) {
+            return Result.failure(BilleteraError.FECHA_INVALIDA.name(), "La fecha debe ser obligatoria.");
+        }
+
+
+        var nuevaBilletera = new Billetera(
+                null,
+                clienteId,
+                fechaAhora,
+                new BigDecimal("0.0")
+        );
+
+
+        return Result.success(nuevaBilletera);
+
+    }
 
 
     public Result<Void> deposit(BigDecimal amount) {
@@ -58,7 +84,21 @@ public class Billetera {
 
 
     // GETTERS AND SETTERS
+    public Long getClienteId() {
+        return clienteId;
+    }
 
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    public OffsetDateTime getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    public void setFechaCreacion(OffsetDateTime fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
     public EstadoBilletera getEstadoBilletera() {
         return estadoBilletera;
     }
@@ -75,13 +115,6 @@ public class Billetera {
         this.id = id;
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
 
     public BigDecimal getSaldo() {
         return saldo;
@@ -91,12 +124,5 @@ public class Billetera {
         this.saldo = saldo;
     }
 
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
 }
 

@@ -7,5 +7,7 @@ public interface UsuarioRepository {
 
      Optional<Usuario> save(Usuario usuario);
 
+     boolean existsByEmail(String email);
+
 
 }

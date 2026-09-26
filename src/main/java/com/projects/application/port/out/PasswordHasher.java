@@ -1,5 +1,5 @@
 package com.projects.application.port.out;
-public interface PasswordEncoderPort {
+public interface PasswordHasher {
 
     String encriptar(String password);
 

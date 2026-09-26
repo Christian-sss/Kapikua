@@ -8,6 +8,9 @@ import java.util.Optional;
 public interface ClienteRepository {
 
     Optional<Cliente> save(Cliente cliente);
+    boolean existsByDni(String dni);
+    boolean existsByCelular(String celular);
+
 
 
 }

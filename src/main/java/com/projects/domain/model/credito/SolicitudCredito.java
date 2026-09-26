@@ -8,8 +8,6 @@ import java.time.LocalDateTime;
 
 public class SolicitudCredito {
 
-
-
     private Long id;
     private Cliente cliente;
     private ProductoCrediticio productoCrediticio;
