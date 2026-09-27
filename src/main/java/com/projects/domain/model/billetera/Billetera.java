@@ -24,6 +24,16 @@ public class Billetera {
         this.estadoBilletera = EstadoBilletera.ACTIVA;
     }
 
+    /**
+     * Reconstruye una billetera ya existente (leída de la base de datos), respetando su
+     * estado real. A diferencia de abrirPara(...), no aplica ninguna regla de creación.
+     */
+    public static Billetera reconstruir(Long id, Long clienteId, BigDecimal saldo, EstadoBilletera estado, OffsetDateTime fechaCreacion) {
+        var billetera = new Billetera(id, clienteId, fechaCreacion, saldo);
+        billetera.estadoBilletera = estado;
+        return billetera;
+    }
+
 
 // Reglas de negocio.
 
@@ -56,6 +66,10 @@ public class Billetera {
 
     public Result<Void> deposit(BigDecimal amount) {
 
+        if (estadoBilletera == EstadoBilletera.BLOQUEADA) {
+            return Result.failure(BilleteraError.BILLETERA_INACTIVA.name(), "La billetera está bloqueada y no puede operar.");
+        }
+
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failure(BilleteraError.AMOUNT_NEGATIVE.name(), "Amount must be greater than zero");
         }
@@ -68,6 +82,10 @@ public class Billetera {
 
 
     public Result<Void> withDraw(BigDecimal amount) {
+
+        if (estadoBilletera == EstadoBilletera.BLOQUEADA) {
+            return Result.failure(BilleteraError.BILLETERA_INACTIVA.name(), "La billetera está bloqueada y no puede operar.");
+        }
 
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failure(BilleteraError.AMOUNT_NEGATIVE.name(), "Amount must be greater than zero");

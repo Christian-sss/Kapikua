@@ -3,9 +3,12 @@ package com.projects.infrastructure.adapter.out.persistence;
 import com.projects.application.port.out.ClienteRepository;
 import com.projects.domain.model.billetera.Cliente;
 
-
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 public class PgClienteRepositoryAdapter extends BaseRepository implements ClienteRepository {
@@ -22,6 +25,21 @@ public class PgClienteRepositoryAdapter extends BaseRepository implements Client
             FROM billetera.cliente c
             WHERE c.numero_celular = ?
     """;
+
+    private static final String CAMPOS_CLIENTE =
+            "id, usuario_id, nombres, apellidos, dni, numero_celular, fecha_nacimiento, fecha_registro";
+
+    private static final String FIND_BY_CELULAR = """
+            SELECT %s
+            FROM billetera.cliente
+            WHERE numero_celular = ?
+            """.formatted(CAMPOS_CLIENTE);
+
+    private static final String FIND_BY_USUARIO_ID = """
+            SELECT %s
+            FROM billetera.cliente
+            WHERE usuario_id = ?
+            """.formatted(CAMPOS_CLIENTE);
 
     private static final String SAVE_CLIENTE = """
 
@@ -91,5 +109,41 @@ public class PgClienteRepositoryAdapter extends BaseRepository implements Client
                 }
             }
         });
+    }
+
+    @Override
+    public Optional<Cliente> findByCelular(String celular) {
+        return ejecutar(conn -> buscarPorColumna(conn, FIND_BY_CELULAR, celular));
+    }
+
+    @Override
+    public Optional<Cliente> findByUsuarioId(Long usuarioId) {
+        return ejecutar(conn -> buscarPorColumna(conn, FIND_BY_USUARIO_ID, usuarioId));
+    }
+
+    private Optional<Cliente> buscarPorColumna(Connection conn, String sql, Object valor) throws SQLException {
+        try (var stmt = conn.prepareStatement(sql)) {
+            stmt.setObject(1, valor);
+
+            try (var rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapear(rs));
+                }
+                return Optional.empty();
+            }
+        }
+    }
+
+    private Cliente mapear(ResultSet rs) throws SQLException {
+        return Cliente.reconstruir(
+                rs.getLong("id"),
+                rs.getLong("usuario_id"),
+                rs.getString("nombres"),
+                rs.getString("apellidos"),
+                rs.getString("dni"),
+                rs.getString("numero_celular"),
+                rs.getDate("fecha_nacimiento").toLocalDate(),
+                rs.getObject("fecha_registro", OffsetDateTime.class)
+        );
     }
 }

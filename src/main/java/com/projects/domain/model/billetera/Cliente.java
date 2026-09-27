@@ -81,6 +81,24 @@ public class Cliente {
 
     }
 
+    /**
+     * Reconstruye un cliente ya existente (leído de la base de datos), sin pasar por
+     * las validaciones de crear(...).
+     */
+    public static Cliente reconstruir(Long id, Long usuarioId, String nombres, String apellidos, String dni,
+                                       String numeroCelular, LocalDate fechaNacimiento, OffsetDateTime fechaRegistro) {
+        var cliente = new Cliente();
+        cliente.id = id;
+        cliente.usuarioId = usuarioId;
+        cliente.nombres = nombres;
+        cliente.apellidos = apellidos;
+        cliente.dni = dni;
+        cliente.numeroCelular = numeroCelular;
+        cliente.fechaNacimiento = fechaNacimiento;
+        cliente.fechaRegistro = fechaRegistro;
+        return cliente;
+    }
+
     public static Result<Void> validarDatos(
             String nombres,
             String apellidos,

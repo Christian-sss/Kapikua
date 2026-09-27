@@ -1,34 +1,27 @@
 package com.projects.domain.model.billetera;
+
 import java.math.BigDecimal;
 
+/**
+ * Modelo simple con los campos de billetera.movimiento. Sin reglas de negocio propias.
+ */
 public class Movimiento {
+
     private Long id;
-    private Transaccion transaccion;
-    private Billetera billetera;
+    private Long transaccionId;
+    private Long billeteraId;
     private Character signo;
     private BigDecimal monto;
     private BigDecimal saldoPosterior;
 
-
-    public Movimiento(Long id, Transaccion transaccion, Billetera billetera, BigDecimal monto, Character signo, BigDecimal saldoPosterior) {
+    public Movimiento(Long id, Long transaccionId, Long billeteraId, Character signo,
+                       BigDecimal monto, BigDecimal saldoPosterior) {
         this.id = id;
-        this.transaccion = transaccion;
-        this.billetera = billetera;
-        this.monto = monto;
+        this.transaccionId = transaccionId;
+        this.billeteraId = billeteraId;
         this.signo = signo;
+        this.monto = monto;
         this.saldoPosterior = saldoPosterior;
-    }
-
-
-    public Movimiento() {}
-
-
-    public Transaccion getTransaccion() {
-        return transaccion;
-    }
-
-    public void setTransaccion(Transaccion transaccion) {
-        this.transaccion = transaccion;
     }
 
     public Long getId() {
@@ -39,12 +32,20 @@ public class Movimiento {
         this.id = id;
     }
 
-    public Billetera getBilletera() {
-        return billetera;
+    public Long getTransaccionId() {
+        return transaccionId;
     }
 
-    public void setBilletera(Billetera billetera) {
-        this.billetera = billetera;
+    public void setTransaccionId(Long transaccionId) {
+        this.transaccionId = transaccionId;
+    }
+
+    public Long getBilleteraId() {
+        return billeteraId;
+    }
+
+    public void setBilleteraId(Long billeteraId) {
+        this.billeteraId = billeteraId;
     }
 
     public Character getSigno() {
