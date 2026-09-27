@@ -1,0 +1,275 @@
+package com.projects.infrastructure.adapter.in.swing.gui;
+
+import com.projects.ewallet.application.command.RegistrarUsuarioCommand;
+import com.projects.ewallet.application.command.UsuarioRegistradoCommand;
+import com.projects.ewallet.domain.model.EstadoBilletera;
+import com.projects.ewallet.domain.model.EstadoTransaccion;
+import com.projects.ewallet.domain.model.NaturalezaTransaccion;
+import com.projects.ewallet.domain.model.billetera.Billetera;
+import com.projects.ewallet.domain.model.billetera.Cliente;
+import com.projects.ewallet.domain.model.billetera.TipoTransaccion;
+import com.projects.ewallet.domain.model.billetera.Transaccion;
+import com.projects.ewallet.domain.model.seguridad.Rol;
+import com.projects.ewallet.domain.model.seguridad.Usuario;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+
+/**
+ * KapikuaServiceContext - Adaptador y contexto central de servicios para Swing.
+ * Conecta las vistas Swing con los modelos de dominio (Cliente, Usuario, Billetera, Transaccion)
+ * y los comandos de aplicación (RegistrarUsuarioCommand, UsuarioRegistradoCommand),
+ * respetando la arquitectura hexagonal prevista en el Plan de Implementación (Secciones 9, 15 y 16).
+ */
+public class KapikuaServiceContext {
+
+    private static KapikuaServiceContext instance;
+
+    private final AtomicLong nextClienteId = new AtomicLong(100);
+    private final AtomicLong nextUsuarioId = new AtomicLong(100);
+    private final AtomicLong nextBilleteraId = new AtomicLong(100);
+    private final AtomicLong nextTransaccionId = new AtomicLong(9000);
+
+    private final List<Cliente> clientes = new ArrayList<>();
+    private final Map<Long, Billetera> billeterasPorClienteId = new HashMap<>();
+    private final List<Transaccion> transaccionesGlobales = new ArrayList<>();
+
+    private final TipoTransaccion tipoTransferencia = new TipoTransaccion(1L, NaturalezaTransaccion.DEBITO, "TRANSFERENCIA");
+    private final TipoTransaccion tipoDeposito = new TipoTransaccion(2L, NaturalezaTransaccion.CREDITO, "DEPOSITO");
+    private final TipoTransaccion tipoPago = new TipoTransaccion(3L, NaturalezaTransaccion.DEBITO, "PAGO");
+    private final TipoTransaccion tipoRetiro = new TipoTransaccion(4L, NaturalezaTransaccion.DEBITO, "RETIRO");
+
+    private Cliente clienteSesionActual;
+
+    private KapikuaServiceContext() {
+        inicializarDatosBase();
+    }
+
+    public static synchronized KapikuaServiceContext getInstance() {
+        if (instance == null) {
+            instance = new KapikuaServiceContext();
+        }
+        return instance;
+    }
+
+    /**
+     * Inicializa datos base consistentes con las entidades de dominio
+     */
+    private void inicializarDatosBase() {
+        Rol rolCliente = new Rol(1L, "CLIENTE");
+        Rol rolAdmin = new Rol(2L, "ADMINISTRADOR");
+
+        // 1. Cliente Juan Pérez (Usuario principal de prueba)
+        Usuario u1 = new Usuario(1L, rolCliente, "juan.perez@kapikua.pe", "123456", true, LocalDateTime.now().minusDays(20));
+        Cliente c1 = new Cliente(1L, "Juan", "Pérez Prado", "74581290", "987654321", u1, LocalDateTime.now().minusDays(20));
+        Billetera b1 = new Billetera(1L, LocalDateTime.now().minusDays(20), EstadoBilletera.ACTIVA, new BigDecimal("1250.00"), c1);
+
+        // 2. Cliente María López
+        Usuario u2 = new Usuario(2L, rolCliente, "maria.lopez@kapikua.pe", "123456", true, LocalDateTime.now().minusDays(15));
+        Cliente c2 = new Cliente(2L, "María", "López Rojas", "80123456", "912345678", u2, LocalDateTime.now().minusDays(15));
+        Billetera b2 = new Billetera(2L, LocalDateTime.now().minusDays(15), EstadoBilletera.ACTIVA, new BigDecimal("850.00"), c2);
+
+        // 3. Cliente Carlos Gómez
+        Usuario u3 = new Usuario(3L, rolCliente, "carlos.gomez@kapikua.pe", "123456", true, LocalDateTime.now().minusDays(10));
+        Cliente c3 = new Cliente(3L, "Carlos", "Gómez Silva", "45678912", "998877665", u3, LocalDateTime.now().minusDays(10));
+        Billetera b3 = new Billetera(3L, LocalDateTime.now().minusDays(10), EstadoBilletera.ACTIVA, new BigDecimal("2400.00"), c3);
+
+        // 4. Cliente Ana Ramírez
+        Usuario u4 = new Usuario(4L, rolCliente, "ana.ramirez@kapikua.pe", "123456", false, LocalDateTime.now().minusDays(5));
+        Cliente c4 = new Cliente(4L, "Ana", "Ramírez Torres", "70984512", "977553311", u4, LocalDateTime.now().minusDays(5));
+        Billetera b4 = new Billetera(4L, LocalDateTime.now().minusDays(5), EstadoBilletera.INACTIVA, new BigDecimal("0.00"), c4);
+
+        clientes.add(c1);
+        clientes.add(c2);
+        clientes.add(c3);
+        clientes.add(c4);
+
+        billeterasPorClienteId.put(c1.getId(), b1);
+        billeterasPorClienteId.put(c2.getId(), b2);
+        billeterasPorClienteId.put(c3.getId(), b3);
+        billeterasPorClienteId.put(c4.getId(), b4);
+
+        // Transacciones iniciales para historial y auditoría
+        transaccionesGlobales.add(new Transaccion(nextTransaccionId.getAndIncrement(), EstadoTransaccion.EXITOSA, LocalDateTime.now().minusHours(3), tipoTransferencia, b2, b1, new BigDecimal("45.00")));
+        transaccionesGlobales.add(new Transaccion(nextTransaccionId.getAndIncrement(), EstadoTransaccion.EXITOSA, LocalDateTime.now().minusDays(1), tipoDeposito, b1, b1, new BigDecimal("100.00")));
+        transaccionesGlobales.add(new Transaccion(nextTransaccionId.getAndIncrement(), EstadoTransaccion.EXITOSA, LocalDateTime.now().minusDays(2), tipoTransferencia, b3, b2, new BigDecimal("120.00")));
+        transaccionesGlobales.add(new Transaccion(nextTransaccionId.getAndIncrement(), EstadoTransaccion.FALLIDA, LocalDateTime.now().minusDays(3), tipoTransferencia, b1, b4, new BigDecimal("500.00")));
+        transaccionesGlobales.add(new Transaccion(nextTransaccionId.getAndIncrement(), EstadoTransaccion.EXITOSA, LocalDateTime.now().minusDays(4), tipoPago, b1, b1, new BigDecimal("65.00")));
+
+        // Sesión por defecto en Juan Pérez
+        this.clienteSesionActual = c1;
+    }
+
+    // ==========================================
+    // Casos de Uso: Registro
+    // ==========================================
+
+    /**
+     * Registra un nuevo cliente y crea su billetera inicial
+     */
+    public UsuarioRegistradoCommand registrarCliente(String nombres, String apellidos, String dni, String celular, String email, String password) {
+        RegistrarUsuarioCommand cmd = new RegistrarUsuarioCommand(email, celular, password);
+
+        Long uid = nextUsuarioId.getAndIncrement();
+        Usuario usuario = new Usuario(uid, new Rol(1L, "CLIENTE"), cmd.email(), cmd.password(), true, LocalDateTime.now());
+
+        Long cid = nextClienteId.getAndIncrement();
+        Cliente cliente = new Cliente(cid, nombres, apellidos, dni, cmd.telefono(), usuario, LocalDateTime.now());
+
+        Long bid = nextBilleteraId.getAndIncrement();
+        Billetera billetera = new Billetera(bid, LocalDateTime.now(), EstadoBilletera.ACTIVA, new BigDecimal("0.00"), cliente);
+
+        clientes.add(cliente);
+        billeterasPorClienteId.put(cliente.getId(), billetera);
+
+        return new UsuarioRegistradoCommand(cid, email, "Cliente registrado exitosamente en KAPIKUA");
+    }
+
+    // ==========================================
+    // Casos de Uso: Autenticación / Login
+    // ==========================================
+
+    public boolean esAdministrador(String correoODni, String password) {
+        if (correoODni == null) return false;
+        String val = correoODni.trim().toLowerCase();
+        return val.equals("admin") || val.equals("admin@kapikua.pe");
+    }
+
+    public Optional<Cliente> autenticar(String correoODni, String password) {
+        if (correoODni == null) return Optional.empty();
+        String val = correoODni.trim();
+
+        for (Cliente c : clientes) {
+            boolean coincideDni = c.getDni().equalsIgnoreCase(val);
+            boolean coincideCorreo = c.getUsuario() != null && c.getUsuario().getEmail().equalsIgnoreCase(val);
+
+            if (coincideDni || coincideCorreo) {
+                // Si la contraseña coincide (o en modo desarrollo sin validar hash estricto)
+                if (password == null || password.isEmpty() ||
+                    (c.getUsuario() != null && password.equals(c.getUsuario().getPasswordHash()))) {
+                    this.clienteSesionActual = c;
+                    return Optional.of(c);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    // ==========================================
+    // Casos de Uso: Billetera y Transferencias
+    // ==========================================
+
+    public Cliente getClienteSesionActual() {
+        return clienteSesionActual != null ? clienteSesionActual : clientes.get(0);
+    }
+
+    public void setClienteSesionActual(Cliente cliente) {
+        this.clienteSesionActual = cliente;
+    }
+
+    public Billetera obtenerBilletera(Cliente cliente) {
+        if (cliente == null) return billeterasPorClienteId.get(clientes.get(0).getId());
+        Billetera b = billeterasPorClienteId.get(cliente.getId());
+        if (b == null) {
+            b = new Billetera(nextBilleteraId.getAndIncrement(), LocalDateTime.now(), EstadoBilletera.ACTIVA, new BigDecimal("1250.00"), cliente);
+            billeterasPorClienteId.put(cliente.getId(), b);
+        }
+        return b;
+    }
+
+    public Optional<Cliente> buscarClientePorCelular(String celular) {
+        if (celular == null) return Optional.empty();
+        for (Cliente c : clientes) {
+            if (celular.trim().equals(c.getNumeroCelular())) {
+                return Optional.of(c);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Ejecuta una transferencia entre billeteras aplicando las reglas de negocio
+     */
+    public boolean realizarTransferencia(Billetera origen, String celularDestino, BigDecimal monto) {
+        if (origen == null || monto == null || monto.compareTo(BigDecimal.ZERO) <= 0) {
+            return false;
+        }
+
+        // Aplicar regla de negocio de retiro en origen
+        var retiroResult = origen.withDraw(monto);
+        if (retiroResult.isFailure()) {
+            return false;
+        }
+
+        // Buscar destino
+        Optional<Cliente> optDestino = buscarClientePorCelular(celularDestino);
+        Billetera destino = optDestino.map(this::obtenerBilletera).orElse(null);
+
+        if (destino != null) {
+            destino.deposit(monto);
+        }
+
+        // Registrar transacción
+        Transaccion tx = new Transaccion(
+                nextTransaccionId.getAndIncrement(),
+                EstadoTransaccion.EXITOSA,
+                LocalDateTime.now(),
+                tipoTransferencia,
+                destino,
+                origen,
+                monto
+        );
+
+        transaccionesGlobales.add(0, tx); // Al inicio para orden cronológico descendente
+        return true;
+    }
+
+    // ==========================================
+    // Consultas para Historial y Administración
+    // ==========================================
+
+    public List<Transaccion> obtenerHistorial(Billetera billetera) {
+        if (billetera == null) return transaccionesGlobales;
+        List<Transaccion> resultado = new ArrayList<>();
+        for (Transaccion tx : transaccionesGlobales) {
+            boolean esOrigen = tx.getBilleteraOrigen() != null && tx.getBilleteraOrigen().getId().equals(billetera.getId());
+            boolean esDestino = tx.getBilleteraDestino() != null && tx.getBilleteraDestino().getId().equals(billetera.getId());
+            if (esOrigen || esDestino) {
+                resultado.add(tx);
+            }
+        }
+        return resultado;
+    }
+
+    public List<Cliente> listarTodosLosClientes() {
+        return Collections.unmodifiableList(clientes);
+    }
+
+    public List<Transaccion> listarTodasLasTransacciones() {
+        return Collections.unmodifiableList(transaccionesGlobales);
+    }
+
+    public int contarTransaccionesTotales() {
+        return transaccionesGlobales.size();
+    }
+
+    public BigDecimal calcularVolumenTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (Transaccion tx : transaccionesGlobales) {
+            if (tx.getEstadoTransaccion() == EstadoTransaccion.EXITOSA && tx.getAmount() != null) {
+                total = total.add(tx.getAmount());
+            }
+        }
+        return total;
+    }
+
+    public double calcularTasaExito() {
+        if (transaccionesGlobales.isEmpty()) return 100.0;
+        long exitosas = transaccionesGlobales.stream()
+                .filter(tx -> tx.getEstadoTransaccion() == EstadoTransaccion.EXITOSA)
+                .count();
+        return (double) exitosas / transaccionesGlobales.size() * 100.0;
+    }
+}

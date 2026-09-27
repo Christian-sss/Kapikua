@@ -1,28 +1,24 @@
 package com.projects.domain.model.credito;
 
-
-import com.projects.domain.model.billetera.Transaccion;
-
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+/**
+ * Modelo simple con los campos de credito.pago. Las reglas del pago viven en PagarCuotaService.
+ */
 public class Pago {
+
     private Long id;
-    private Transaccion transaccion;
+    private Long transaccionId;
     private BigDecimal montoTotal;
-    private LocalDateTime fecha;
+    private OffsetDateTime fecha;
 
-
-    public Pago(Long id, BigDecimal montoTotal, Transaccion transaccion, LocalDateTime fecha) {
+    public Pago(Long id, Long transaccionId, BigDecimal montoTotal, OffsetDateTime fecha) {
         this.id = id;
+        this.transaccionId = transaccionId;
         this.montoTotal = montoTotal;
-        this.transaccion = transaccion;
         this.fecha = fecha;
     }
-
-    public Pago() {}
-
-
 
     public Long getId() {
         return id;
@@ -32,12 +28,12 @@ public class Pago {
         this.id = id;
     }
 
-    public Transaccion getTransaccion() {
-        return transaccion;
+    public Long getTransaccionId() {
+        return transaccionId;
     }
 
-    public void setTransaccion(Transaccion transaccion) {
-        this.transaccion = transaccion;
+    public void setTransaccionId(Long transaccionId) {
+        this.transaccionId = transaccionId;
     }
 
     public BigDecimal getMontoTotal() {
@@ -48,11 +44,11 @@ public class Pago {
         this.montoTotal = montoTotal;
     }
 
-    public LocalDateTime getFecha() {
+    public OffsetDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(OffsetDateTime fecha) {
         this.fecha = fecha;
     }
 }

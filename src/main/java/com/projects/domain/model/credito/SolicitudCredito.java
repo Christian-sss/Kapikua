@@ -1,37 +1,39 @@
 package com.projects.domain.model.credito;
 
 import com.projects.domain.model.EstadoSolicitudCredito;
-import com.projects.domain.model.billetera.Cliente;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+/**
+ * Modelo simple con los campos de credito.solicitud_credito. Las reglas de evaluación
+ * viven en SolicitarCreditoService, no aquí.
+ */
 public class SolicitudCredito {
 
     private Long id;
-    private Cliente cliente;
-    private ProductoCrediticio productoCrediticio;
+    private Long clienteId;
+    private Long productoId;
     private BigDecimal montoSolicitado;
-    private  Integer plazoMeses;
+    private Integer plazoMeses;
     private EstadoSolicitudCredito estado;
     private Integer scoreObtenido;
     private String motivoRechazo;
-    private LocalDateTime fechaSolicitud;
+    private OffsetDateTime fechaSolicitud;
 
-    public SolicitudCredito() {}
-
-    public SolicitudCredito(Long id, Cliente cliente, ProductoCrediticio productoCrediticio, Integer plazoMeses, BigDecimal montoSolicitado, Integer scoreObtenido, EstadoSolicitudCredito estado, String motivoRechazo, LocalDateTime fechaSolicitud) {
+    public SolicitudCredito(Long id, Long clienteId, Long productoId, BigDecimal montoSolicitado,
+                             Integer plazoMeses, EstadoSolicitudCredito estado, Integer scoreObtenido,
+                             String motivoRechazo, OffsetDateTime fechaSolicitud) {
         this.id = id;
-        this.cliente = cliente;
-        this.productoCrediticio = productoCrediticio;
-        this.plazoMeses = plazoMeses;
+        this.clienteId = clienteId;
+        this.productoId = productoId;
         this.montoSolicitado = montoSolicitado;
-        this.scoreObtenido = scoreObtenido;
+        this.plazoMeses = plazoMeses;
         this.estado = estado;
+        this.scoreObtenido = scoreObtenido;
         this.motivoRechazo = motivoRechazo;
         this.fechaSolicitud = fechaSolicitud;
     }
-
 
     public Long getId() {
         return id;
@@ -41,20 +43,20 @@ public class SolicitudCredito {
         this.id = id;
     }
 
-    public ProductoCrediticio getProductoCrediticio() {
-        return productoCrediticio;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setProductoCrediticio(ProductoCrediticio productoCrediticio) {
-        this.productoCrediticio = productoCrediticio;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Long getProductoId() {
+        return productoId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setProductoId(Long productoId) {
+        this.productoId = productoId;
     }
 
     public BigDecimal getMontoSolicitado() {
@@ -73,14 +75,6 @@ public class SolicitudCredito {
         this.plazoMeses = plazoMeses;
     }
 
-    public Integer getScoreObtenido() {
-        return scoreObtenido;
-    }
-
-    public void setScoreObtenido(Integer scoreObtenido) {
-        this.scoreObtenido = scoreObtenido;
-    }
-
     public EstadoSolicitudCredito getEstado() {
         return estado;
     }
@@ -89,12 +83,12 @@ public class SolicitudCredito {
         this.estado = estado;
     }
 
-    public LocalDateTime getFechaSolicitud() {
-        return fechaSolicitud;
+    public Integer getScoreObtenido() {
+        return scoreObtenido;
     }
 
-    public void setFechaSolicitud(LocalDateTime fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
+    public void setScoreObtenido(Integer scoreObtenido) {
+        this.scoreObtenido = scoreObtenido;
     }
 
     public String getMotivoRechazo() {
@@ -103,5 +97,13 @@ public class SolicitudCredito {
 
     public void setMotivoRechazo(String motivoRechazo) {
         this.motivoRechazo = motivoRechazo;
+    }
+
+    public OffsetDateTime getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(OffsetDateTime fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
     }
 }

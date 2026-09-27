@@ -5,32 +5,31 @@ import com.projects.domain.model.EstadoCuota;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Modelo simple con los campos de credito.cuota.
+ */
 public class Cuota {
 
     private Long id;
-
-    private Prestamo prestamo;
-    private Integer numeroDeCuota;
+    private Long prestamoId;
+    private Integer numero;
     private LocalDate fechaVencimiento;
     private BigDecimal capital;
     private BigDecimal interes;
     private BigDecimal mora;
     private EstadoCuota estado;
 
-    public Cuota(Long id, Prestamo prestamo, Integer numeroDeCuota, LocalDate fechaVencimiento, BigDecimal interes, BigDecimal capital, BigDecimal mora, EstadoCuota estado) {
+    public Cuota(Long id, Long prestamoId, Integer numero, LocalDate fechaVencimiento,
+                  BigDecimal capital, BigDecimal interes, BigDecimal mora, EstadoCuota estado) {
         this.id = id;
-        this.prestamo = prestamo;
-        this.numeroDeCuota = numeroDeCuota;
+        this.prestamoId = prestamoId;
+        this.numero = numero;
         this.fechaVencimiento = fechaVencimiento;
-        this.interes = interes;
         this.capital = capital;
+        this.interes = interes;
         this.mora = mora;
         this.estado = estado;
     }
-
-    public Cuota() {
-    }
-
 
     public Long getId() {
         return id;
@@ -40,20 +39,20 @@ public class Cuota {
         this.id = id;
     }
 
-    public Prestamo getPrestamo() {
-        return prestamo;
+    public Long getPrestamoId() {
+        return prestamoId;
     }
 
-    public void setPrestamo(Prestamo prestamo) {
-        this.prestamo = prestamo;
+    public void setPrestamoId(Long prestamoId) {
+        this.prestamoId = prestamoId;
     }
 
-    public Integer getNumeroDeCuota() {
-        return numeroDeCuota;
+    public Integer getNumero() {
+        return numero;
     }
 
-    public void setNumeroDeCuota(Integer numeroDeCuota) {
-        this.numeroDeCuota = numeroDeCuota;
+    public void setNumero(Integer numero) {
+        this.numero = numero;
     }
 
     public LocalDate getFechaVencimiento() {
@@ -72,6 +71,14 @@ public class Cuota {
         this.capital = capital;
     }
 
+    public BigDecimal getInteres() {
+        return interes;
+    }
+
+    public void setInteres(BigDecimal interes) {
+        this.interes = interes;
+    }
+
     public BigDecimal getMora() {
         return mora;
     }
@@ -86,13 +93,5 @@ public class Cuota {
 
     public void setEstado(EstadoCuota estado) {
         this.estado = estado;
-    }
-
-    public BigDecimal getInteres() {
-        return interes;
-    }
-
-    public void setInteres(BigDecimal interes) {
-        this.interes = interes;
     }
 }

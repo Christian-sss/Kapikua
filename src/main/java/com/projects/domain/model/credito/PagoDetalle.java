@@ -2,28 +2,28 @@ package com.projects.domain.model.credito;
 
 import java.math.BigDecimal;
 
+/**
+ * Modelo simple con los campos de credito.pago_detalle: cuánto de un pago se aplicó a cada
+ * concepto (mora, interés, capital) de una cuota.
+ */
 public class PagoDetalle {
 
     private Long id;
-    private Pago pago;
-    private Cuota cuota;
+    private Long pagoId;
+    private Long cuotaId;
     private BigDecimal capitalAplicado;
     private BigDecimal interesAplicado;
     private BigDecimal moraAplicado;
 
-    public PagoDetalle(Long id, BigDecimal moraAplicado, BigDecimal interesAplicado, BigDecimal capitalAplicado, Cuota cuota, Pago pago) {
+    public PagoDetalle(Long id, Long pagoId, Long cuotaId, BigDecimal capitalAplicado,
+                        BigDecimal interesAplicado, BigDecimal moraAplicado) {
         this.id = id;
-        this.moraAplicado = moraAplicado;
-        this.interesAplicado = interesAplicado;
+        this.pagoId = pagoId;
+        this.cuotaId = cuotaId;
         this.capitalAplicado = capitalAplicado;
-        this.cuota = cuota;
-        this.pago = pago;
+        this.interesAplicado = interesAplicado;
+        this.moraAplicado = moraAplicado;
     }
-
-
-    public PagoDetalle() {}
-
-
 
     public Long getId() {
         return id;
@@ -33,20 +33,20 @@ public class PagoDetalle {
         this.id = id;
     }
 
-    public Cuota getCuota() {
-        return cuota;
+    public Long getPagoId() {
+        return pagoId;
     }
 
-    public void setCuota(Cuota cuota) {
-        this.cuota = cuota;
+    public void setPagoId(Long pagoId) {
+        this.pagoId = pagoId;
     }
 
-    public Pago getPago() {
-        return pago;
+    public Long getCuotaId() {
+        return cuotaId;
     }
 
-    public void setPago(Pago pago) {
-        this.pago = pago;
+    public void setCuotaId(Long cuotaId) {
+        this.cuotaId = cuotaId;
     }
 
     public BigDecimal getCapitalAplicado() {
@@ -57,19 +57,19 @@ public class PagoDetalle {
         this.capitalAplicado = capitalAplicado;
     }
 
-    public BigDecimal getMoraAplicado() {
-        return moraAplicado;
-    }
-
-    public void setMoraAplicado(BigDecimal moraAplicado) {
-        this.moraAplicado = moraAplicado;
-    }
-
     public BigDecimal getInteresAplicado() {
         return interesAplicado;
     }
 
     public void setInteresAplicado(BigDecimal interesAplicado) {
         this.interesAplicado = interesAplicado;
+    }
+
+    public BigDecimal getMoraAplicado() {
+        return moraAplicado;
+    }
+
+    public void setMoraAplicado(BigDecimal moraAplicado) {
+        this.moraAplicado = moraAplicado;
     }
 }

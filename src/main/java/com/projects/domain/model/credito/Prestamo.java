@@ -1,31 +1,34 @@
 package com.projects.domain.model.credito;
 
-
 import com.projects.domain.model.EstadoPrestamo;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
+/**
+ * Modelo simple con los campos de credito.prestamo. Las reglas (desembolso, pagos)
+ * viven en el servicio del caso de uso correspondiente.
+ */
 public class Prestamo {
 
-
     private Long id;
-    private SolicitudCredito solicitudCredito;
+    private Long solicitudId;
     private BigDecimal montoDesembolsado;
     private BigDecimal tcea;
     private BigDecimal saldoCapital;
     private EstadoPrestamo estado;
+    private OffsetDateTime fechaDesembolso;
 
-    public Prestamo(Long id, SolicitudCredito solicitudCredito, BigDecimal montoDesembolsado, BigDecimal tcea, BigDecimal saldoCapital, EstadoPrestamo estado) {
+    public Prestamo(Long id, Long solicitudId, BigDecimal montoDesembolsado, BigDecimal tcea,
+                     BigDecimal saldoCapital, EstadoPrestamo estado, OffsetDateTime fechaDesembolso) {
         this.id = id;
-        this.solicitudCredito = solicitudCredito;
+        this.solicitudId = solicitudId;
         this.montoDesembolsado = montoDesembolsado;
         this.tcea = tcea;
         this.saldoCapital = saldoCapital;
         this.estado = estado;
+        this.fechaDesembolso = fechaDesembolso;
     }
-
-    public Prestamo() {}
-
 
     public Long getId() {
         return id;
@@ -35,12 +38,12 @@ public class Prestamo {
         this.id = id;
     }
 
-    public SolicitudCredito getSolicitudCredito() {
-        return solicitudCredito;
+    public Long getSolicitudId() {
+        return solicitudId;
     }
 
-    public void setSolicitudCredito(SolicitudCredito solicitudCredito) {
-        this.solicitudCredito = solicitudCredito;
+    public void setSolicitudId(Long solicitudId) {
+        this.solicitudId = solicitudId;
     }
 
     public BigDecimal getMontoDesembolsado() {
@@ -59,6 +62,14 @@ public class Prestamo {
         this.tcea = tcea;
     }
 
+    public BigDecimal getSaldoCapital() {
+        return saldoCapital;
+    }
+
+    public void setSaldoCapital(BigDecimal saldoCapital) {
+        this.saldoCapital = saldoCapital;
+    }
+
     public EstadoPrestamo getEstado() {
         return estado;
     }
@@ -67,11 +78,11 @@ public class Prestamo {
         this.estado = estado;
     }
 
-    public BigDecimal getSaldoCapital() {
-        return saldoCapital;
+    public OffsetDateTime getFechaDesembolso() {
+        return fechaDesembolso;
     }
 
-    public void setSaldoCapital(BigDecimal saldoCapital) {
-        this.saldoCapital = saldoCapital;
+    public void setFechaDesembolso(OffsetDateTime fechaDesembolso) {
+        this.fechaDesembolso = fechaDesembolso;
     }
 }
