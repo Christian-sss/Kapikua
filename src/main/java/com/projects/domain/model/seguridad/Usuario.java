@@ -73,6 +73,24 @@ public class Usuario {
         return Result.success(usuario);
     }
 
+    public static Usuario reconstruir(
+            Long id,
+            Long rolId,
+            String email,
+            String passwordHash,
+            Boolean activo,
+            OffsetDateTime fechaCreacion
+    ) {
+        var usuario = new Usuario();
+        usuario.id = id;
+        usuario.rolId = rolId;
+        usuario.email = email;
+        usuario.passwordHash = passwordHash;
+        usuario.activo = activo;
+        usuario.fechaCreacion = fechaCreacion;
+        return usuario;
+    }
+
     public static Result<Void> validarDatos(String email, String passwordHash) {
 
 

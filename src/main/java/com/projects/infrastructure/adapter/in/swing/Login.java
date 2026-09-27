@@ -4,21 +4,75 @@
  */
 package com.projects.infrastructure.adapter.in.swing;
 
+import com.projects.application.dto.command.IniciarSesionCommand;
+import com.projects.application.port.in.IniciarSesionUseCase;
+import com.projects.domain.result.Result;
+import com.projects.infrastructure.config.CompositionRoot;
+
 import javax.swing.*;
+import java.util.Arrays;
 
 /**
  *
  * @author christianr.apazaturpo
  */
 public class Login extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
+
+    private final IniciarSesionUseCase iniciarSesionUseCase;
 
     /**
      * Creates new form Login
      */
     public Login() {
+        this(CompositionRoot.crearIniciarSesionUseCase());
+    }
+
+    public Login(IniciarSesionUseCase iniciarSesionUseCase) {
+        this.iniciarSesionUseCase = iniciarSesionUseCase;
         initComponents();
+        jButton1.addActionListener(e -> onLogin());
+    }
+
+    private void onLogin() {
+        char[] password = jPasswordField1.getPassword();
+        var command = new IniciarSesionCommand(jTextField1.getText(), new String(password));
+        Arrays.fill(password, '\0');
+
+        jButton1.setEnabled(false);
+
+        new SwingWorker<Result<?>, Void>() {
+            @Override
+            protected Result<?> doInBackground() {
+                return iniciarSesionUseCase.ejecutar(command);
+            }
+
+            @Override
+            protected void done() {
+                jButton1.setEnabled(true);
+                try {
+                    mostrarResultado(get());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(Login.this,
+                            "Error inesperado: " + ex.getCause(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }.execute();
+    }
+
+    private void mostrarResultado(Result<?> resultado) {
+        if (resultado.isSuccess()) {
+            JOptionPane.showMessageDialog(this,
+                    "Bienvenido, " + jTextField1.getText(),
+                    "Sesión iniciada", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            var error = resultado.getError().orElseThrow();
+            JOptionPane.showMessageDialog(this,
+                    "[" + error.code() + "] " + error.message(),
+                    "No se pudo iniciar sesión", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**

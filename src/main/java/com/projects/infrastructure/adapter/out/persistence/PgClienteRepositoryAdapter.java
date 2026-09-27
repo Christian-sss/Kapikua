@@ -4,6 +4,7 @@ import com.projects.application.port.out.ClienteRepository;
 import com.projects.domain.model.billetera.Cliente;
 
 
+import java.sql.Date;
 import java.sql.Statement;
 import java.util.Optional;
 
@@ -23,10 +24,10 @@ public class PgClienteRepositoryAdapter extends BaseRepository implements Client
     """;
 
     private static final String SAVE_CLIENTE = """
-            
-            INSERT INTO billetera.cliente (usuario_id, nombres, apellidos, dni, numero_celular)
-            VALUES (?,?,?,?,?);
-   
+
+            INSERT INTO billetera.cliente (usuario_id, nombres, apellidos, dni, numero_celular, fecha_nacimiento)
+            VALUES (?,?,?,?,?,?);
+
     """;
 
 
@@ -42,6 +43,7 @@ public class PgClienteRepositoryAdapter extends BaseRepository implements Client
                 stmt.setString(3, cliente.getApellidos());
                 stmt.setString(4, cliente.getDni());
                 stmt.setString(5,cliente.getNumeroCelular());
+                stmt.setDate(6, Date.valueOf(cliente.getFechaNacimiento()));
 
                 int filaAfectada = stmt.executeUpdate();
 

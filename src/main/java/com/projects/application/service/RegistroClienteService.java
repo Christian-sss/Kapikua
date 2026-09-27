@@ -42,11 +42,15 @@ public class RegistroClienteService implements RegistrarClienteUseCase {
         }
 
 
+        OffsetDateTime dateTime = OffsetDateTime.now(ZoneOffset.UTC);
+
         var validacionCliente = Cliente.validarDatos(
                 command.nombres(),
                 command.apellidos(),
                 command.dni(),
-                command.celular());
+                command.celular(),
+                command.fechaNacimiento(),
+                dateTime);
 
         if (validacionCliente.isFailure()) {
             return Result.failure(validacionCliente.getError().get());
@@ -64,8 +68,6 @@ public class RegistroClienteService implements RegistrarClienteUseCase {
 
 
         var passwordHash = passwordHasher.encriptar(command.password());
-
-        OffsetDateTime dateTime = OffsetDateTime.now(ZoneOffset.UTC);
 
         return transactionManager.enTransaccion(()-> {
 
@@ -109,6 +111,7 @@ public class RegistroClienteService implements RegistrarClienteUseCase {
                     command.apellidos(),
                     command.dni(),
                     command.celular(),
+                    command.fechaNacimiento(),
                     dateTime
                     );
 

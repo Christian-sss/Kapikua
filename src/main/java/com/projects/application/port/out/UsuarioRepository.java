@@ -9,5 +9,7 @@ public interface UsuarioRepository {
 
      boolean existsByEmail(String email);
 
+     Optional<Usuario> findByEmail(String email);
+
 
 }

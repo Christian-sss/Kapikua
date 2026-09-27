@@ -8,4 +8,6 @@ public interface RolRepository {
 
     Optional<Rol> findByNombre(String nombreRol);
 
+    Optional<Rol> findById(Long id);
+
 }

@@ -4,16 +4,25 @@ import com.projects.application.port.out.UsuarioRepository;
 import com.projects.domain.model.seguridad.Usuario;
 
 import java.sql.Statement;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 public class PgUsuarioRepositoryAdapter extends BaseRepository implements UsuarioRepository {
 
     private static final String EXISTS_EMAIL = """
-            
+
                     SELECT 1
                     FROM seguridad.usuario u
                     WHERE u.correo = ?
-            
+
+            """;
+
+    private static final String BUSCAR_POR_EMAIL = """
+
+                    SELECT id, rol_id, correo, password_hash, activo, fecha_creacion
+                    FROM seguridad.usuario u
+                    WHERE u.correo = ?
+
             """;
 
 
@@ -69,6 +78,30 @@ public class PgUsuarioRepositoryAdapter extends BaseRepository implements Usuari
                 stmt.setString(1, email);
                 try (var rs = stmt.executeQuery()) {
                     return rs.next();
+                }
+            }
+        });
+    }
+
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+
+        return ejecutar(conn -> {
+            try (var stmt = conn.prepareStatement(BUSCAR_POR_EMAIL)) {
+                stmt.setString(1, email);
+
+                try (var rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        return Optional.of(Usuario.reconstruir(
+                                rs.getLong("id"),
+                                rs.getLong("rol_id"),
+                                rs.getString("correo"),
+                                rs.getString("password_hash"),
+                                rs.getBoolean("activo"),
+                                rs.getObject("fecha_creacion", OffsetDateTime.class)
+                        ));
+                    }
+                    return Optional.empty();
                 }
             }
         });
