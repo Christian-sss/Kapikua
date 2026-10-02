@@ -38,8 +38,7 @@ public class IniciarSesionService implements IniciarSesionUseCase {
 
         var usuarioEncontrado = usuarioRepository.findByEmail(emailNormalizado);
 
-        // Mismo mensaje tanto si el email no existe como si la contraseña no coincide,
-        // para no revelar a un atacante qué correos están registrados.
+
         if (usuarioEncontrado.isEmpty()) {
             return Result.failure(UsuarioError.CREDENCIALES_INVALIDAS.name(), "Email o contraseña incorrectos.");
         }

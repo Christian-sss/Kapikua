@@ -51,11 +51,11 @@
               <Component id="pnlEncabezado" alignment="0" max="32767" attributes="0"/>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="pnlTarjetaSaldo" max="32767" attributes="0"/>
-                      <Component id="pnlAcciones" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="pnlAcciones" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlTarjetaSaldo" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="44" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -67,7 +67,7 @@
                   <Component id="pnlTarjetaSaldo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="pnlAcciones" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="88" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -86,14 +86,25 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblNombreCliente" min="-2" pref="300" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
+                              <Component id="lblNombreCliente" min="-2" pref="368" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
                               <Component id="lblMarca" min="-2" pref="200" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblMiCuenta" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblEstadoBilletera" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblMiCuenta" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -105,7 +116,9 @@
                           <Component id="lblMarca" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblMiCuenta" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                      <Component id="lblEstadoBilletera" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="lblNombreCliente" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="12" max="32767" attributes="0"/>
                   </Group>
@@ -150,6 +163,17 @@
                 <Property name="text" type="java.lang.String" value="&#xa1;Hola, Cliente!"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="lblEstadoBilletera">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="0"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="71" green="7b" red="2" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x25cf; Billetera ACTIVA"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlTarjetaSaldo">
@@ -159,25 +183,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompoundBorder>
-                  <Border type="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                    <MatteColorBorder bottom="0" left="5" right="0" top="0">
-                      <Color blue="14" green="e0" red="ff" type="rgb"/>
-                    </MatteColorBorder>
-                  </Border>
-                  <Border type="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder>
-                          <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="18" left="22" right="22" top="18"/>
-                      </Border>
-                    </CompoundBorder>
-                  </Border>
-                </CompoundBorder>
+                <CompoundBorder/>
               </Border>
             </Property>
           </Properties>
@@ -189,8 +195,7 @@
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblTituloSaldo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="lblSaldo" alignment="0" pref="390" max="32767" attributes="0"/>
-                          <Component id="lblEstadoBilletera" alignment="0" max="32767" attributes="0"/>
+                          <Component id="lblSaldo" alignment="0" pref="362" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
@@ -203,9 +208,7 @@
                       <Component id="lblTituloSaldo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblSaldo" min="-2" pref="45" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblEstadoBilletera" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="20" max="32767" attributes="0"/>
+                      <EmptySpace pref="41" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -234,17 +237,6 @@
                 <Property name="text" type="java.lang.String" value="S/ 0.00"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblEstadoBilletera">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="12" style="0"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="71" green="7b" red="2" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x25cf; Billetera ACTIVA"/>
-              </Properties>
-            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="pnlAcciones">
@@ -254,16 +246,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompoundBorder>
-                  <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder roundedCorners="true">
-                      <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                    </LineBorder>
-                  </Border>
-                  <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="20" left="22" right="22" top="20"/>
-                  </Border>
-                </CompoundBorder>
+                <CompoundBorder/>
               </Border>
             </Property>
           </Properties>
@@ -271,17 +254,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnTransferir" max="32767" attributes="0"/>
-                          <Component id="btnRetirar" max="32767" attributes="0"/>
-                          <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="btnCerrarSesion" max="32767" attributes="0"/>
+                          <Component id="btnTransferir" alignment="0" max="32767" attributes="0"/>
+                          <Component id="btnRetirar" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="btnHistorial" min="-2" pref="190" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="btnCreditos" pref="188" max="32767" attributes="0"/>
+                              <Component id="btnCreditos" pref="174" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="btnCerrarSesion" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
@@ -300,8 +283,8 @@
                           <Component id="btnCreditos" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                      <Component id="btnCerrarSesion" min="-2" pref="42" max="-2" attributes="0"/>
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                      <Component id="btnCerrarSesion" min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace pref="26" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -340,16 +323,7 @@
                 <Property name="text" type="java.lang.String" value="Retirar saldo"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="12" right="12" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
                 <Property name="focusPainted" type="boolean" value="false"/>
@@ -391,16 +365,7 @@
                 <Property name="text" type="java.lang.String" value="Cat&#xe1;logo de cr&#xe9;ditos"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="12" right="12" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
                 <Property name="focusPainted" type="boolean" value="false"/>
@@ -423,16 +388,7 @@
                 <Property name="text" type="java.lang.String" value="Cerrar sesi&#xf3;n"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="12" right="12" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
                 <Property name="focusPainted" type="boolean" value="false"/>

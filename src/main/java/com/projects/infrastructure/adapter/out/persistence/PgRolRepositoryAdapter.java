@@ -2,6 +2,7 @@ package com.projects.infrastructure.adapter.out.persistence;
 
 import com.projects.application.port.out.RolRepository;
 import com.projects.domain.model.seguridad.Rol;
+import java.sql.ResultSet;
 import java.util.Optional;
 
 public class PgRolRepositoryAdapter extends BaseRepository implements RolRepository {
@@ -26,7 +27,7 @@ public class PgRolRepositoryAdapter extends BaseRepository implements RolReposit
         return ejecutar(conn -> {
             try (var stmt = conn.prepareStatement(BUSCAR_ROL_POR_ID)) {
                 stmt.setLong(1, id);
-                try (var rs = stmt.executeQuery()) {
+                try (ResultSet rs = stmt.executeQuery()) {
                     if (rs.next()) {
                         return Optional.of(new Rol(rs.getLong("id"), rs.getString("nombre_rol")));
                     }

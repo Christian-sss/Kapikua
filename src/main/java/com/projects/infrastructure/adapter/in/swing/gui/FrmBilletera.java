@@ -5,6 +5,7 @@ import com.projects.application.dto.response.SesionIniciadaResponse;
 import com.projects.application.port.in.CerrarSesionUseCase;
 import com.projects.application.port.in.ConsultarBilleteraUseCase;
 import com.projects.application.port.out.ClienteRepository;
+import com.projects.infrastructure.adapter.out.persistence.PgClienteRepositoryAdapter;
 import com.projects.infrastructure.config.CompositionRoot;
 
 import javax.swing.*;
@@ -22,6 +23,7 @@ public class FrmBilletera extends javax.swing.JFrame {
     private final SesionIniciadaResponse sesion;
     private final CerrarSesionUseCase cerrarSesionUseCase;
     private final ConsultarBilleteraUseCase consultarBilleteraUseCase;
+    private final ClienteRepository clienteRepository = new PgClienteRepositoryAdapter();
 
     // Puente provisional usuarioId -> clienteId (ver CompositionRoot.crearClienteRepository).
     private final Long clienteId;
@@ -151,8 +153,15 @@ public class FrmBilletera extends javax.swing.JFrame {
     }
 
     public String getNombreCliente() {
-        var email = sesion.email();
-        return email.substring(0, email.indexOf('@'));
+        var usuarioId = sesion.usuarioId();
+
+        var client = clienteRepository
+                .findByUsuarioId(usuarioId)
+                .orElseThrow(
+                        () -> new RuntimeException(" ")
+                );
+
+        return client.getNombres();
     }
 
     /**
@@ -219,10 +228,10 @@ public class FrmBilletera extends javax.swing.JFrame {
         lblMarca = new javax.swing.JLabel();
         lblMiCuenta = new javax.swing.JLabel();
         lblNombreCliente = new javax.swing.JLabel();
+        lblEstadoBilletera = new javax.swing.JLabel();
         pnlTarjetaSaldo = new javax.swing.JPanel();
         lblTituloSaldo = new javax.swing.JLabel();
         lblSaldo = new javax.swing.JLabel();
-        lblEstadoBilletera = new javax.swing.JLabel();
         pnlAcciones = new javax.swing.JPanel();
         btnTransferir = new javax.swing.JButton();
         btnRetirar = new javax.swing.JButton();
@@ -239,19 +248,23 @@ public class FrmBilletera extends javax.swing.JFrame {
 
         pnlEncabezado.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblMarca.setFont(new java.awt.Font("Segoe UI", 1, 22));
+        lblMarca.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblMarca.setForeground(new java.awt.Color(2, 123, 113));
-        lblMarca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoKapikua_small.png")));
+        lblMarca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoKapikua_small.png"))); // NOI18N
         lblMarca.setText("KAPIKUA");
         lblMarca.setIconTextGap(8);
 
-        lblMiCuenta.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        lblMiCuenta.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblMiCuenta.setForeground(new java.awt.Color(100, 115, 109));
         lblMiCuenta.setText("Mi cuenta personal");
 
-        lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 20));
+        lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         lblNombreCliente.setForeground(new java.awt.Color(32, 49, 45));
         lblNombreCliente.setText("¡Hola, Cliente!");
+
+        lblEstadoBilletera.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        lblEstadoBilletera.setForeground(new java.awt.Color(2, 123, 113));
+        lblEstadoBilletera.setText("● Billetera ACTIVA");
 
         javax.swing.GroupLayout pnlEncabezadoLayout = new javax.swing.GroupLayout(pnlEncabezado);
         pnlEncabezado.setLayout(pnlEncabezadoLayout);
@@ -260,12 +273,19 @@ public class FrmBilletera extends javax.swing.JFrame {
             .addGroup(pnlEncabezadoLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlEncabezadoLayout.createSequentialGroup()
+                        .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEncabezadoLayout.createSequentialGroup()
                         .addComponent(lblMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblMiCuenta)))
-                .addGap(30, 30, 30))
+                        .addGroup(pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlEncabezadoLayout.createSequentialGroup()
+                                .addComponent(lblEstadoBilletera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+                            .addGroup(pnlEncabezadoLayout.createSequentialGroup()
+                                .addComponent(lblMiCuenta)
+                                .addGap(38, 38, 38))))))
         );
         pnlEncabezadoLayout.setVerticalGroup(
             pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,32 +294,24 @@ public class FrmBilletera extends javax.swing.JFrame {
                 .addGroup(pnlEncabezadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMarca)
                     .addComponent(lblMiCuenta))
-                .addGap(18, 18, 18)
+                .addGap(1, 1, 1)
+                .addComponent(lblEstadoBilletera)
+                .addGap(2, 2, 2)
                 .addComponent(lblNombreCliente)
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pnlTarjetaSaldo.setBackground(new java.awt.Color(255, 255, 255));
-        pnlTarjetaSaldo.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            javax.swing.BorderFactory.createMatteBorder(0, 5, 0, 0, new java.awt.Color(255, 224, 20)),
-            javax.swing.BorderFactory.createCompoundBorder(
-                javax.swing.BorderFactory.createLineBorder(new java.awt.Color(228, 235, 231), 1),
-                javax.swing.BorderFactory.createEmptyBorder(18, 22, 18, 22)
-            )
-        ));
+        pnlTarjetaSaldo.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblTituloSaldo.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        lblTituloSaldo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblTituloSaldo.setForeground(new java.awt.Color(100, 115, 109));
         lblTituloSaldo.setText("Saldo disponible");
 
-        lblSaldo.setFont(new java.awt.Font("Segoe UI", 1, 32));
+        lblSaldo.setFont(new java.awt.Font("Segoe UI", 1, 32)); // NOI18N
         lblSaldo.setForeground(new java.awt.Color(32, 49, 45));
         lblSaldo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblSaldo.setText("S/ 0.00");
-
-        lblEstadoBilletera.setFont(new java.awt.Font("Segoe UI", 0, 12));
-        lblEstadoBilletera.setForeground(new java.awt.Color(2, 123, 113));
-        lblEstadoBilletera.setText("● Billetera ACTIVA");
 
         javax.swing.GroupLayout pnlTarjetaSaldoLayout = new javax.swing.GroupLayout(pnlTarjetaSaldo);
         pnlTarjetaSaldo.setLayout(pnlTarjetaSaldoLayout);
@@ -309,8 +321,7 @@ public class FrmBilletera extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addGroup(pnlTarjetaSaldoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTituloSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-                    .addComponent(lblEstadoBilletera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE))
                 .addGap(25, 25, 25))
         );
         pnlTarjetaSaldoLayout.setVerticalGroup(
@@ -320,19 +331,14 @@ public class FrmBilletera extends javax.swing.JFrame {
                 .addComponent(lblTituloSaldo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEstadoBilletera)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pnlAcciones.setBackground(new java.awt.Color(255, 255, 255));
-        pnlAcciones.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(20, 22, 20, 22)
-        ));
+        pnlAcciones.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
         btnTransferir.setBackground(new java.awt.Color(2, 123, 113));
-        btnTransferir.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        btnTransferir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnTransferir.setForeground(new java.awt.Color(255, 255, 255));
         btnTransferir.setText("TRANSFERIR DINERO");
         btnTransferir.setBorderPainted(false);
@@ -344,13 +350,10 @@ public class FrmBilletera extends javax.swing.JFrame {
         });
 
         btnRetirar.setBackground(new java.awt.Color(255, 255, 255));
-        btnRetirar.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnRetirar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnRetirar.setForeground(new java.awt.Color(32, 49, 45));
         btnRetirar.setText("Retirar saldo");
-        btnRetirar.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)
-        ));
+        btnRetirar.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnRetirar.setFocusPainted(false);
         btnRetirar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,7 +362,7 @@ public class FrmBilletera extends javax.swing.JFrame {
         });
 
         btnHistorial.setBackground(new java.awt.Color(255, 224, 20));
-        btnHistorial.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnHistorial.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(32, 49, 45));
         btnHistorial.setText("Ver historial");
         btnHistorial.setBorderPainted(false);
@@ -371,13 +374,10 @@ public class FrmBilletera extends javax.swing.JFrame {
         });
 
         btnCreditos.setBackground(new java.awt.Color(255, 255, 255));
-        btnCreditos.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnCreditos.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnCreditos.setForeground(new java.awt.Color(32, 49, 45));
         btnCreditos.setText("Catálogo de créditos");
-        btnCreditos.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)
-        ));
+        btnCreditos.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnCreditos.setFocusPainted(false);
         btnCreditos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -386,13 +386,10 @@ public class FrmBilletera extends javax.swing.JFrame {
         });
 
         btnCerrarSesion.setBackground(new java.awt.Color(255, 255, 255));
-        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnCerrarSesion.setForeground(new java.awt.Color(200, 60, 60));
         btnCerrarSesion.setText("Cerrar sesión");
-        btnCerrarSesion.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)
-        ));
+        btnCerrarSesion.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnCerrarSesion.setFocusPainted(false);
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -404,16 +401,16 @@ public class FrmBilletera extends javax.swing.JFrame {
         pnlAcciones.setLayout(pnlAccionesLayout);
         pnlAccionesLayout.setHorizontalGroup(
             pnlAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAccionesLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAccionesLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(pnlAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTransferir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnRetirar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlAccionesLayout.createSequentialGroup()
+                .addGroup(pnlAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTransferir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRetirar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlAccionesLayout.createSequentialGroup()
                         .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCreditos, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
-                    .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnCreditos, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)))
                 .addGap(25, 25, 25))
         );
         pnlAccionesLayout.setVerticalGroup(
@@ -428,8 +425,8 @@ public class FrmBilletera extends javax.swing.JFrame {
                     .addComponent(btnHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCreditos, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16)
-                .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(btnCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnlFondoLayout = new javax.swing.GroupLayout(pnlFondo);
@@ -439,10 +436,10 @@ public class FrmBilletera extends javax.swing.JFrame {
             .addComponent(pnlEncabezado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlFondoLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(pnlFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnlTarjetaSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(pnlFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlTarjetaSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         pnlFondoLayout.setVerticalGroup(
             pnlFondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,7 +449,7 @@ public class FrmBilletera extends javax.swing.JFrame {
                 .addComponent(pnlTarjetaSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
