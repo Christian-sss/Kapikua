@@ -37,3 +37,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Configuración local y artefactos ###
+config.properties
+out/

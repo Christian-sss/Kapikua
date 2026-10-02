@@ -73,16 +73,7 @@
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                <CompoundBorder>
-                  <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder roundedCorners="true">
-                      <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                    </LineBorder>
-                  </Border>
-                  <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="20" left="25" right="25" top="20"/>
-                  </Border>
-                </CompoundBorder>
+                <CompoundBorder/>
               </Border>
             </Property>
           </Properties>
@@ -246,16 +237,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -281,16 +263,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -316,16 +289,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -351,16 +315,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -386,16 +341,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -408,7 +354,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="2d" green="31" red="20" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Fecha de nacimiento (dd/mm/aaaa):"/>
+                <Property name="text" type="java.lang.String" value="Fecha de nacimiento:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtFechaNacimiento">
@@ -421,16 +367,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -443,7 +380,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="2d" green="31" red="20" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Contrase&#xf1;a (m&#xed;nimo 6 caracteres):"/>
+                <Property name="text" type="java.lang.String" value="Contrase&#xf1;a:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JPasswordField" name="txtContrasena">
@@ -456,16 +393,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -491,16 +419,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="c0" green="c7" red="b8" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="10" right="10" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
               </Properties>
@@ -550,16 +469,7 @@
                 <Property name="text" type="java.lang.String" value="Volver al inicio de sesi&#xf3;n"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                        <LineBorder roundedCorners="true">
-                          <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                        </LineBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                        <EmptyBorder bottom="6" left="12" right="12" top="6"/>
-                      </Border>
-                    </CompoundBorder>
+                    <CompoundBorder/>
                   </Border>
                 </Property>
                 <Property name="focusPainted" type="boolean" value="false"/>

@@ -66,6 +66,8 @@ public class Billetera {
 
     public Result<Void> deposit(BigDecimal amount) {
 
+
+
         if (estadoBilletera == EstadoBilletera.BLOQUEADA) {
             return Result.failure(BilleteraError.BILLETERA_INACTIVA.name(), "La billetera está bloqueada y no puede operar.");
         }
@@ -73,6 +75,11 @@ public class Billetera {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             return Result.failure(BilleteraError.AMOUNT_NEGATIVE.name(), "Amount must be greater than zero");
         }
+
+        if (amount.stripTrailingZeros().scale() > 2) {
+            return Result.failure(BilleteraError.MONTO_INVALIDO.name(), "El monto admite como máximo 2 decimales.");
+        }
+
 
         saldo = saldo.add(amount);
 
@@ -91,9 +98,14 @@ public class Billetera {
             return Result.failure(BilleteraError.AMOUNT_NEGATIVE.name(), "Amount must be greater than zero");
         }
 
+        if (amount.stripTrailingZeros().scale() > 2) {
+            return Result.failure(BilleteraError.MONTO_INVALIDO.name(), "El monto admite como máximo 2 decimales.");
+        }
+
         if (amount.compareTo(saldo) > 0) {
             return Result.failure(BilleteraError.SALDO_INSUFICIENTE.name(), "Saldo insufficient");
         }
+
 
         saldo = saldo.subtract(amount);
 

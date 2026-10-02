@@ -320,118 +320,91 @@ public class FrmRegistro extends javax.swing.JFrame {
         pnlFondo.setPreferredSize(new java.awt.Dimension(520, 720));
 
         pnlTarjeta.setBackground(new java.awt.Color(255, 255, 255));
-        pnlTarjeta.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            javax.swing.BorderFactory.createLineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(20, 25, 20, 25)
-        ));
+        pnlTarjeta.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22));
+        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblTitulo.setForeground(new java.awt.Color(2, 123, 113));
         lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoKapikua_small.png")));
+        lblTitulo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/LogoKapikua_small.png"))); // NOI18N
         lblTitulo.setText("Crear Cuenta en KAPIKUA");
         lblTitulo.setIconTextGap(8);
 
-        lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblSubtitulo.setForeground(new java.awt.Color(100, 115, 109));
         lblSubtitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblSubtitulo.setText("Ingresa tus datos personales para comenzar");
 
-        lblNombres.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblNombres.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblNombres.setForeground(new java.awt.Color(32, 49, 45));
         lblNombres.setText("Nombres:");
 
-        txtNombres.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtNombres.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtNombres.setForeground(new java.awt.Color(32, 49, 45));
-        txtNombres.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtNombres.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblApellidos.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblApellidos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblApellidos.setForeground(new java.awt.Color(32, 49, 45));
         lblApellidos.setText("Apellidos:");
 
-        txtApellidos.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtApellidos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtApellidos.setForeground(new java.awt.Color(32, 49, 45));
-        txtApellidos.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtApellidos.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblDni.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblDni.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblDni.setForeground(new java.awt.Color(32, 49, 45));
         lblDni.setText("DNI (8 dígitos):");
 
-        txtDni.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtDni.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtDni.setForeground(new java.awt.Color(32, 49, 45));
-        txtDni.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtDni.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblCelular.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblCelular.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCelular.setForeground(new java.awt.Color(32, 49, 45));
         lblCelular.setText("Celular (9 dígitos):");
 
-        txtCelular.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtCelular.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtCelular.setForeground(new java.awt.Color(32, 49, 45));
-        txtCelular.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtCelular.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblCorreo.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblCorreo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCorreo.setForeground(new java.awt.Color(32, 49, 45));
         lblCorreo.setText("Correo electrónico:");
 
-        txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtCorreo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtCorreo.setForeground(new java.awt.Color(32, 49, 45));
-        txtCorreo.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtCorreo.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblFechaNacimiento.setForeground(new java.awt.Color(32, 49, 45));
-        lblFechaNacimiento.setText("Fecha de nacimiento (dd/mm/aaaa):");
+        lblFechaNacimiento.setText("Fecha de nacimiento:");
 
-        txtFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtFechaNacimiento.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtFechaNacimiento.setForeground(new java.awt.Color(32, 49, 45));
-        txtFechaNacimiento.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtFechaNacimiento.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblContrasena.setForeground(new java.awt.Color(32, 49, 45));
-        lblContrasena.setText("Contraseña (mínimo 6 caracteres):");
+        lblContrasena.setText("Contraseña:");
 
-        txtContrasena.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtContrasena.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtContrasena.setForeground(new java.awt.Color(32, 49, 45));
-        txtContrasena.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtContrasena.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblConfirmarContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12));
+        lblConfirmarContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblConfirmarContrasena.setForeground(new java.awt.Color(32, 49, 45));
         lblConfirmarContrasena.setText("Confirmar contraseña:");
 
-        txtConfirmarContrasena.setFont(new java.awt.Font("Segoe UI", 0, 13));
+        txtConfirmarContrasena.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         txtConfirmarContrasena.setForeground(new java.awt.Color(32, 49, 45));
-        txtConfirmarContrasena.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(184, 199, 192), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 10, 6, 10)
-        ));
+        txtConfirmarContrasena.setBorder(javax.swing.BorderFactory.createCompoundBorder());
 
-        lblMensaje.setFont(new java.awt.Font("Segoe UI", 0, 12));
+        lblMensaje.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblMensaje.setForeground(new java.awt.Color(200, 60, 60));
         lblMensaje.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMensaje.setText(" ");
 
         btnRegistrar.setBackground(new java.awt.Color(2, 123, 113));
-        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14));
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnRegistrar.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrar.setText("REGISTRARME");
         btnRegistrar.setBorderPainted(false);
@@ -443,13 +416,10 @@ public class FrmRegistro extends javax.swing.JFrame {
         });
 
         btnVolver.setBackground(new java.awt.Color(255, 255, 255));
-        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnVolver.setForeground(new java.awt.Color(32, 49, 45));
         btnVolver.setText("Volver al inicio de sesión");
-        btnVolver.setBorder(javax.swing.BorderFactory.createCompoundBorder(
-            new javax.swing.border.LineBorder(new java.awt.Color(228, 235, 231), 1, true),
-            javax.swing.BorderFactory.createEmptyBorder(6, 12, 6, 12)
-        ));
+        btnVolver.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         btnVolver.setFocusPainted(false);
         btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -496,7 +466,7 @@ public class FrmRegistro extends javax.swing.JFrame {
                             .addComponent(txtConfirmarContrasena)))
                     .addComponent(lblMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnRegistrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnVolver, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         pnlTarjetaLayout.setVerticalGroup(
@@ -614,13 +584,13 @@ public class FrmRegistro extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnlFondo;
     private javax.swing.JPanel pnlTarjeta;
+    private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtCelular;
     private javax.swing.JPasswordField txtConfirmarContrasena;
     private javax.swing.JPasswordField txtContrasena;
     private javax.swing.JTextField txtCorreo;
-    private javax.swing.JTextField txtCelular;
     private javax.swing.JTextField txtDni;
     private javax.swing.JTextField txtFechaNacimiento;
-    private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 }
