@@ -213,7 +213,7 @@ public class FrmBilletera extends javax.swing.JFrame {
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            cerrarSesionUseCase.ejecutar();
+            cerrarSesionUseCase.cerrarSesion();
             FrmLogin login = new FrmLogin();
             login.setVisible(true);
             this.dispose();

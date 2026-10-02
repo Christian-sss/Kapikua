@@ -19,6 +19,7 @@ import com.projects.application.port.in.SolicitarCreditoUseCase;
 import com.projects.application.port.in.TransferirMontoUseCase;
 import com.projects.application.port.out.ClienteRepository;
 import com.projects.application.port.out.SesionContexto;
+import com.projects.application.port.out.SesionRepository;
 import com.projects.application.service.BuscarDestinatarioService;
 import com.projects.application.service.CerrarSesionService;
 import com.projects.application.service.ConsultarBilleteraService;
@@ -57,6 +58,7 @@ import com.projects.infrastructure.adapter.out.persistence.PgUsuarioRepositoryAd
 import com.projects.infrastructure.adapter.out.persistence.TransactionManagerAdapter;
 import com.projects.infrastructure.adapter.out.reporte.ITextReportePdfAdapter;
 import com.projects.infrastructure.adapter.out.security.PasswordEncoderAdapter;
+import com.projects.infrastructure.adapter.out.persistence.PgSesionRepositoryAdapter;
 import com.projects.infrastructure.adapter.out.session.SesionContextoAdapter;
 
 public final class CompositionRoot {
@@ -65,6 +67,11 @@ public final class CompositionRoot {
     // cualquier pantalla que necesite saber quién está logueado) deben compartir
     // la misma sesión activa.
     private static final SesionContexto SESION_CONTEXTO = new SesionContextoAdapter();
+
+    // Registro compartido de sesiones activas (BD): impide abrir la misma cuenta en dos instancias.
+    private static final SesionRepository SESION_REPOSITORY = new PgSesionRepositoryAdapter();
+
+    private static final MantenimientoSesion MANTENIMIENTO_SESION = new MantenimientoSesion();
 
     private CompositionRoot() {
     }
@@ -85,12 +92,18 @@ public final class CompositionRoot {
                 new PgUsuarioRepositoryAdapter(),
                 new PgRolRepositoryAdapter(),
                 new PasswordEncoderAdapter(),
-                SESION_CONTEXTO
+                SESION_CONTEXTO,
+                SESION_REPOSITORY
         );
     }
 
     public static CerrarSesionUseCase crearCerrarSesionUseCase() {
-        return new CerrarSesionService(SESION_CONTEXTO);
+        return new CerrarSesionService(SESION_CONTEXTO, SESION_REPOSITORY);
+    }
+
+    /** Debe llamarse tras un inicio de sesión exitoso; es idempotente. */
+    public static void mantenerSesionViva() {
+        MANTENIMIENTO_SESION.iniciar(SESION_CONTEXTO, SESION_REPOSITORY, crearCerrarSesionUseCase());
     }
 
     public static ConsultarBilleteraUseCase crearConsultarBilleteraUseCase() {

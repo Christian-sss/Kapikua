@@ -17,7 +17,20 @@ import com.projects.application.dto.response.ComprobanteResponse;
 import com.projects.application.dto.response.EstadisticasResponse;
 import com.projects.application.port.out.ReportePdfPort;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
+import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -102,7 +115,9 @@ public class ITextReportePdfAdapter implements ReportePdfPort {
             agregarCeldas(resumen, "Volumen operado (exitosas)", formatearMonto(estadisticas.volumenOperado()));
             documento.add(resumen);
 
-            agregarSeccion(documento, estadisticas.periodo() == PeriodoEstadistica.DIA ? "Volumen por día" : "Volumen por mes");
+            documento.add(bloqueConGrafico(
+                    estadisticas.periodo() == PeriodoEstadistica.DIA ? "Volumen por día" : "Volumen por mes",
+                    graficoBarras(estadisticas)));
             var serie = tabla(new float[]{3, 2}, "Período", "Monto");
             for (var punto : estadisticas.serie()) {
                 agregarCeldas(serie, punto.etiqueta() + " (" + punto.inicio().format(FORMATO_DIA) + ")",
@@ -110,7 +125,11 @@ public class ITextReportePdfAdapter implements ReportePdfPort {
             }
             documento.add(serie);
 
-            agregarSeccion(documento, "Volumen por tipo de operación");
+            if (estadisticas.volumenPorTipo().isEmpty()) {
+                agregarSeccion(documento, "Volumen por tipo de operación");
+            } else {
+                documento.add(bloqueConGrafico("Volumen por tipo de operación", graficoTorta(estadisticas)));
+            }
             var tipos = tabla(new float[]{3, 1, 2}, "Tipo", "Cantidad", "Monto");
             if (estadisticas.volumenPorTipo().isEmpty()) {
                 agregarCeldas(tipos, "Sin operaciones en el período", "-", "-");
@@ -133,9 +152,88 @@ public class ITextReportePdfAdapter implements ReportePdfPort {
             documento.close();
             return salida.toByteArray();
 
-        } catch (DocumentException ex) {
+        } catch (DocumentException | IOException ex) {
             throw new RuntimeException("Error al generar el reporte de estadísticas en PDF", ex);
         }
+    }
+
+    // Título y gráfico en una sola tabla sin cortes: iText 5 aplaza las imágenes que no caben en la
+    // página, y el gráfico terminaría separado de su título (o detrás de la tabla siguiente).
+    private PdfPTable bloqueConGrafico(String titulo, com.itextpdf.text.Image grafico) {
+        var bloque = new PdfPTable(1);
+        bloque.setWidthPercentage(100);
+        bloque.setKeepTogether(true);
+        bloque.setSpacingBefore(12f);
+
+        var celdaTitulo = new PdfPCell(new Paragraph(titulo, new Font(Font.FontFamily.HELVETICA, 13, Font.BOLD)));
+        celdaTitulo.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+        celdaTitulo.setPaddingLeft(0);
+        celdaTitulo.setPaddingBottom(8f);
+        bloque.addCell(celdaTitulo);
+
+        var celdaGrafico = new PdfPCell(grafico, false);
+        celdaGrafico.setBorder(com.itextpdf.text.Rectangle.NO_BORDER);
+        celdaGrafico.setPaddingBottom(8f);
+        bloque.addCell(celdaGrafico);
+        return bloque;
+    }
+
+    private com.itextpdf.text.Image graficoBarras(EstadisticasResponse estadisticas) throws IOException, DocumentException {
+        var datos = new DefaultCategoryDataset();
+        for (var punto : estadisticas.serie()) {
+            datos.addValue(punto.monto(), "Monto (S/)", punto.etiqueta());
+        }
+        boolean porDia = estadisticas.periodo() == PeriodoEstadistica.DIA;
+        JFreeChart grafico = ChartFactory.createBarChart(null, porDia ? "Día" : "Mes", "Monto (S/)",
+                datos, PlotOrientation.VERTICAL, false, true, false);
+        grafico.setBackgroundPaint(Color.WHITE);
+        CategoryPlot plot = grafico.getCategoryPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
+        // Sin ventas el eje se calcularía sobre un rango de ~0 y mostraría etiquetas como 4E-9.
+        boolean hayMontos = estadisticas.serie().stream().anyMatch(punto -> punto.monto().signum() > 0);
+        var ejeMontos = (org.jfree.chart.axis.NumberAxis) plot.getRangeAxis();
+        ejeMontos.setLowerBound(0);
+        if (!hayMontos) {
+            ejeMontos.setUpperBound(100);
+        }
+        ((BarRenderer) plot.getRenderer()).setSeriesPaint(0, new Color(2, 123, 113));
+        ((BarRenderer) plot.getRenderer()).setBarPainter(new org.jfree.chart.renderer.category.StandardBarPainter());
+        return aImagen(grafico, 500, 190);
+    }
+
+    private com.itextpdf.text.Image graficoTorta(EstadisticasResponse estadisticas) throws IOException, DocumentException {
+        var datos = new DefaultPieDataset();
+        for (var tipo : estadisticas.volumenPorTipo()) {
+            datos.setValue(tipo.tipo(), tipo.monto());
+        }
+        JFreeChart grafico = ChartFactory.createPieChart(null, datos, false, true, false);
+        grafico.setBackgroundPaint(Color.WHITE);
+        PiePlot plot = (PiePlot) grafico.getPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setOutlineVisible(false);
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}: {2}"));
+        plot.setShadowPaint(null);
+        plot.setLabelBackgroundPaint(Color.WHITE);
+        plot.setLabelOutlinePaint(null);
+        plot.setLabelShadowPaint(null);
+        Color[] paleta = {new Color(0x2A, 0x78, 0xD6), new Color(0xEB, 0x68, 0x34), new Color(0x1B, 0xAF, 0x7A),
+                new Color(0xED, 0xA1, 0x00), new Color(0xE8, 0x7B, 0xA4), new Color(0x00, 0x83, 0x00)};
+        int i = 0;
+        for (var tipo : estadisticas.volumenPorTipo()) {
+            plot.setSectionPaint(tipo.tipo(), paleta[i++ % paleta.length]);
+        }
+        return aImagen(grafico, 500, 190);
+    }
+
+    private com.itextpdf.text.Image aImagen(JFreeChart grafico, int ancho, int alto) throws IOException, DocumentException {
+        var png = new ByteArrayOutputStream();
+        ImageIO.write(grafico.createBufferedImage(ancho, alto), "png", png);
+        var imagen = com.itextpdf.text.Image.getInstance(png.toByteArray());
+        imagen.setAlignment(Element.ALIGN_CENTER);
+        imagen.scaleToFit(480, 190);
+        imagen.setSpacingAfter(8f);
+        return imagen;
     }
 
     private void agregarSeccion(Document documento, String texto) throws DocumentException {

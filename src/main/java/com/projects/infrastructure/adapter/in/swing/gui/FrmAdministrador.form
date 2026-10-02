@@ -96,7 +96,6 @@
                           <Component id="lblTitulo" pref="380" max="32767" attributes="0"/>
                           <Component id="lblSubtitulo" pref="380" max="32767" attributes="0"/>
                           <Component id="lblRol" pref="380" max="32767" attributes="0"/>
-                          <Component id="btnClientes" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnTransacciones" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnGraficos" alignment="0" max="32767" attributes="0"/>
                           <Component id="btnCerrarSesion" alignment="0" max="32767" attributes="0"/>
@@ -115,8 +114,6 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblRol" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      <Component id="btnClientes" min="-2" pref="46" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="btnTransacciones" min="-2" pref="46" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="btnGraficos" min="-2" pref="46" max="-2" attributes="0"/>
@@ -153,7 +150,7 @@
                   <Color blue="6d" green="73" red="64" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="Supervisi&#xf3;n, clientes, auditor&#xed;a financiera y m&#xe9;tricas"/>
+                <Property name="text" type="java.lang.String" value="Supervisi&#xf3;n, auditor&#xed;a financiera y m&#xe9;tricas"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblRol">
@@ -167,48 +164,6 @@
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="&#x25cf; Sesi&#xf3;n activa: Administrador del Sistema"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnClientes">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="14" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="2d" green="31" red="20" type="rgb"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Gesti&#xf3;n de Clientes"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                    <CompoundBorder>
-                      <Border type="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                        <MatteColorBorder bottom="0" left="4" right="0" top="0">
-                          <Color blue="71" green="7b" red="2" type="rgb"/>
-                        </MatteColorBorder>
-                      </Border>
-                      <Border type="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                        <CompoundBorder>
-                          <Border type="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                            <LineBorder roundedCorners="true">
-                              <Color blue="e7" green="eb" red="e4" type="rgb"/>
-                            </LineBorder>
-                          </Border>
-                          <Border type="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                            <EmptyBorder bottom="10" left="18" right="18" top="10"/>
-                          </Border>
-                        </CompoundBorder>
-                      </Border>
-                    </CompoundBorder>
-                  </Border>
-                </Property>
-                <Property name="focusPainted" type="boolean" value="false"/>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClientesActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnTransacciones">
               <Properties>

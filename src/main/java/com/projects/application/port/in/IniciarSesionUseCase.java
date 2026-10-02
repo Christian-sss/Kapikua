@@ -6,6 +6,6 @@ import com.projects.domain.result.Result;
 
 public interface IniciarSesionUseCase {
 
-    Result<SesionIniciadaResponse> ejecutar(IniciarSesionCommand command);
+    Result<SesionIniciadaResponse> iniciarSesion(IniciarSesionCommand command);
 
 }

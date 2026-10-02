@@ -115,7 +115,7 @@ public class FrmLogin extends javax.swing.JFrame {
         new SwingWorker<Result<SesionIniciadaResponse>, Void>() {
             @Override
             protected Result<SesionIniciadaResponse> doInBackground() {
-                return iniciarSesionUseCase.ejecutar(command);
+                return iniciarSesionUseCase.iniciarSesion(command);
             }
 
             @Override
@@ -137,6 +137,7 @@ public class FrmLogin extends javax.swing.JFrame {
     }
 
     private void abrirPantallaSegunRol(SesionIniciadaResponse sesion) {
+        CompositionRoot.mantenerSesionViva();
         if (sesion.esAdmin()) {
             new FrmAdministrador().setVisible(true);
         } else {

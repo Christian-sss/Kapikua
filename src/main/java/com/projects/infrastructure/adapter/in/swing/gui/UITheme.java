@@ -469,29 +469,6 @@ public final class UITheme {
         });
     }
 
-    public static Icon createClientIcon(int size) {
-        return new Icon() {
-            @Override
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.translate(x, y);
-                double scale = (double) size / 24.0;
-                g2.scale(scale, scale);
-
-                g2.setColor(VERDE_KAPIKUA);
-                g2.fillOval(7, 2, 10, 10);
-                g2.fillRoundRect(3, 14, 18, 9, 6, 6);
-                g2.dispose();
-            }
-
-            @Override
-            public int getIconWidth() { return size; }
-            @Override
-            public int getIconHeight() { return size; }
-        };
-    }
-
     public static Icon createTransactionIcon(int size) {
         return new Icon() {
             @Override

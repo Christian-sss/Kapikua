@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * FrmAdministrador - Menú principal del módulo administrativo de KAPIKUA.
  * Implementado según la Sección 7.1 del Plan de Implementación.
- * Permite acceder a la gestión de clientes, auditoría de transacciones y gráficos estadísticos.
+ * Permite acceder a la auditoría de transacciones y gráficos estadísticos.
  */
 public class FrmAdministrador extends javax.swing.JFrame {
 
@@ -56,18 +56,11 @@ public class FrmAdministrador extends javax.swing.JFrame {
         lblRol.setFont(UITheme.FONT_SMALL);
         lblRol.setForeground(UITheme.VERDE_PROFUNDO);
 
-        // Tres tarjetas de acceso alineadas: icono verde para Clientes, amarillo para Transacciones, y verde para Gráficos
-        UITheme.styleMenuCardButton(btnClientes, UITheme.createClientIcon(24), UITheme.VERDE_KAPIKUA);
+        // Dos tarjetas de acceso: icono amarillo para Transacciones y verde para Gráficos
         UITheme.styleMenuCardButton(btnTransacciones, UITheme.createTransactionIcon(24), UITheme.AMARILLO_KAPIKUA);
         UITheme.styleMenuCardButton(btnGraficos, UITheme.createChartIcon(24), UITheme.VERDE_PROFUNDO);
         UITheme.styleNeutralButton(btnCerrarSesion);
         btnCerrarSesion.setForeground(UITheme.DANGER);
-    }
-
-    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {
-        FrmClientesAdmin clientesAdmin = new FrmClientesAdmin(this);
-        clientesAdmin.setVisible(true);
-        this.setVisible(false);
     }
 
     private void btnTransaccionesActionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,7 +85,7 @@ public class FrmAdministrador extends javax.swing.JFrame {
         );
 
         if (confirm == JOptionPane.YES_OPTION) {
-            cerrarSesionUseCase.ejecutar();
+            cerrarSesionUseCase.cerrarSesion();
             FrmLogin login = new FrmLogin();
             login.setVisible(true);
             this.dispose();
@@ -107,7 +100,6 @@ public class FrmAdministrador extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         lblSubtitulo = new javax.swing.JLabel();
         lblRol = new javax.swing.JLabel();
-        btnClientes = new javax.swing.JButton();
         btnTransacciones = new javax.swing.JButton();
         btnGraficos = new javax.swing.JButton();
         btnCerrarSesion = new javax.swing.JButton();
@@ -132,25 +124,12 @@ public class FrmAdministrador extends javax.swing.JFrame {
         lblSubtitulo.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblSubtitulo.setForeground(new java.awt.Color(100, 115, 109));
         lblSubtitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSubtitulo.setText("Supervisión, clientes, auditoría financiera y métricas");
+        lblSubtitulo.setText("Supervisión, auditoría financiera y métricas");
 
         lblRol.setFont(new java.awt.Font("Segoe UI", 1, 11)); // NOI18N
         lblRol.setForeground(new java.awt.Color(2, 123, 113));
         lblRol.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblRol.setText("● Sesión activa: Administrador del Sistema");
-
-        btnClientes.setBackground(new java.awt.Color(255, 255, 255));
-        btnClientes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnClientes.setForeground(new java.awt.Color(32, 49, 45));
-        btnClientes.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        btnClientes.setText("Gestión de Clientes");
-        btnClientes.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 4, 0, 0, new java.awt.Color(2, 123, 113)), javax.swing.BorderFactory.createCompoundBorder(new javax.swing.border.LineBorder(new java.awt.Color(228, 235, 231), 1, true), javax.swing.BorderFactory.createEmptyBorder(10, 18, 10, 18))));
-        btnClientes.setFocusPainted(false);
-        btnClientes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClientesActionPerformed(evt);
-            }
-        });
 
         btnTransacciones.setBackground(new java.awt.Color(255, 255, 255));
         btnTransacciones.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -200,7 +179,6 @@ public class FrmAdministrador extends javax.swing.JFrame {
                     .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addComponent(lblSubtitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
                     .addComponent(lblRol, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(btnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnTransacciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGraficos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnCerrarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -216,8 +194,6 @@ public class FrmAdministrador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblRol)
                 .addGap(25, 25, 25)
-                .addComponent(btnClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
                 .addComponent(btnTransacciones, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16)
                 .addComponent(btnGraficos, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,7 +241,6 @@ public class FrmAdministrador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCerrarSesion;
-    private javax.swing.JButton btnClientes;
     private javax.swing.JButton btnGraficos;
     private javax.swing.JButton btnTransacciones;
     private javax.swing.JLabel lblRol;

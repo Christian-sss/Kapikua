@@ -46,7 +46,7 @@ public class GenerarComprobanteService implements GenerarComprobanteUseCase {
 
         var comprobante = construir(filas, command.clienteSolicitanteId());
 
-        return Result.success(reportePdfPort.generarComprobante(comprobante));
+        return Result.success(reportePdfPort.   generarComprobante(comprobante));
     }
 
     private ComprobanteResponse construir(List<ComprobanteFilaResponse> filas, Long clienteSolicitanteId) {
